@@ -8,7 +8,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import CardActions from '@material-ui/core/CardActions';
-import { Button } from '../../stories/Button';
+import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
+import { Grid } from '@material-ui/core';
 
 
 // const Notification = ({ title, description, ...props }) => {
@@ -35,40 +37,39 @@ class Notification extends Component {
     return (
       <div className={classes.root} >
         <Card className={classes.card}>
-          <CardHeader
-            // action={
-            //   <IconButton onClick={handleHiddenButton} >
-            //     {
-            //       isShowing
-            //       &&
-            //       <CloseIcon />
-            //     }
-            //   </IconButton>
-            // }
-            action={
-              <IconButton onClick={this.toggleShowHide} >
-                {this.state.isDisplayed ?
-                  <CloseIcon />
-                  : null
-                }
-              </IconButton>
-            }
-            title={this.props.title}
-            className={classes.title} >
-          </CardHeader>
-          <CardContent >
-            <Typography
-              className={classes.subtext}
-              variant='body2'
-              component='p'
-            >
-              {this.props.description}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size='large' label="Yes" style={{ outline: 0 }} />
-            <Button size='large' label="No" style={{ outline: 0 }} />
-          </CardActions>
+          <Grid container spacing={0}>
+            <Grid item xs={10}>
+              <CardHeader
+                className={classes.title}
+                title={this.props.title}
+              />
+              <Divider />
+              <CardContent>
+                <Typography
+                  className={classes.subtext}
+                  variant='body1'
+                  component='p'
+                >
+                  {this.props.description}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button variant="outlined" className={classes.button}>{this.props.yes}</Button>
+                <Button variant="outlined" className={classes.button}>{this.props.no}</Button>
+              </CardActions>
+            </Grid>
+            <Grid item xs={2}>
+              <Divider className={classes.divider} orientation="vertical" flexItem />
+              <div className={classes.action}>
+                <IconButton onClick={this.toggleShowHide} >
+                  {this.state.isDisplayed ?
+                    <CloseIcon />
+                    : null
+                  }
+                </IconButton>
+              </div>
+            </Grid>
+          </Grid>
         </Card>
       </div>
     )
@@ -94,7 +95,7 @@ const styles = (theme) => createStyles({
     marginTop: '10px',
   },
   card: {
-    maxWidth: '500px',
+    width: '500px',
     backgroundColor: '#f5f5f5',
   },
   title: {
@@ -103,22 +104,25 @@ const styles = (theme) => createStyles({
     overflow: "hidden",
     whiteSpace: "nowrap",
   },
+  divider: {
+    width: '1px',
+    height: '100%'
+  },
+  action: {
+    marginTop: '-150px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   subtext: {
-    maxWidth: "470px",
-    overflow: "hidden",
-    position: "relative",
-    // lineHeight: "1.2em",
-    maxHeight: "60px",
-    marginRight: "-1em",
-    paddingRight: "1em",
-    marginBottom: "0.5em",
     textAlign: 'left',
-    "&&:before": {
-      content: '"..."',
-      position: "absolute",
-      right: 0,
-      bottom: 0,
-    },
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: 'hidden',
+    height: "70px",
+  },
+  button: {
+    borderRadius: '20px'
   }
 });
 export default withStyles(styles)(Notification);
