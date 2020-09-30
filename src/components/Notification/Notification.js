@@ -10,7 +10,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import CardActions from '@material-ui/core/CardActions';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import { Grid } from '@material-ui/core';
 
 
 // const Notification = ({ title, description, ...props }) => {
@@ -20,6 +19,7 @@ import { Grid } from '@material-ui/core';
 //   const handleHiddenButton = () => {
 //     setIsShowing(!isShowing);
 //   };
+
 
 class Notification extends Component {
   constructor(props) {
@@ -37,39 +37,44 @@ class Notification extends Component {
     return (
       <div className={classes.root} >
         <Card className={classes.card}>
-          <Grid container spacing={0}>
-            <Grid item xs={10}>
-              <CardHeader
-                className={classes.title}
-                title={this.props.title}
-              />
-              <Divider />
-              <CardContent>
-                <Typography
-                  className={classes.subtext}
-                  variant='body1'
-                  component='p'
-                >
-                  {this.props.description}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button variant="outlined" className={classes.button}>{this.props.yes}</Button>
-                <Button variant="outlined" className={classes.button}>{this.props.no}</Button>
-              </CardActions>
-            </Grid>
-            <Grid item xs={2}>
-              <Divider className={classes.divider} orientation="vertical" flexItem />
-              <div className={classes.action}>
-                <IconButton onClick={this.toggleShowHide} >
-                  {this.state.isDisplayed ?
-                    <CloseIcon />
-                    : null
-                  }
-                </IconButton>
-              </div>
-            </Grid>
-          </Grid>
+          <CardHeader
+            className={classes.title}
+            title={this.props.title}
+            action={
+              <IconButton onClick={this.toggleShowHide} >
+                {this.state.isDisplayed ?
+                  <CloseIcon />
+                  : null
+                }
+              </IconButton>
+            }
+          >
+          </CardHeader>
+          <Divider />
+          <CardContent>
+              <Typography
+                className={classes.subtext}
+                variant='body1'
+              >
+                {this.props.description}
+              </Typography>
+          </CardContent>
+          <CardActions className={classes.actionContainer}>
+            <Button
+              variant="contained"
+              color='primary'
+              className={classes.button}
+            >
+              {this.props.yes}
+            </Button>
+            <Button
+              variant="contained"
+              color='secondary'
+              className={classes.button}
+            >
+              {this.props.no}
+            </Button>
+          </CardActions>
         </Card>
       </div>
     )
@@ -96,7 +101,6 @@ const styles = (theme) => createStyles({
   },
   card: {
     width: '500px',
-    backgroundColor: '#f5f5f5',
   },
   title: {
     textAlign: "left",
@@ -104,25 +108,37 @@ const styles = (theme) => createStyles({
     overflow: "hidden",
     whiteSpace: "nowrap",
   },
-  divider: {
-    width: '1px',
-    height: '100%'
-  },
-  action: {
-    marginTop: '-150px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   subtext: {
-    textAlign: 'left',
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    overflow: 'hidden',
-    height: "70px",
+    maxWidth: "28rem",
+    overflow: "hidden",
+    position: "relative",
+    lineHeight: "1.2em",
+    maxHeight: "2.4em",
+    textAlign: "justify",
+    marginRight: "-1em",
+    paddingRight: "1em",
+    "&&:before": {
+      content: '"..."',
+      position: "absolute",
+      right: 0,
+      bottom: 0
+    },
+    "&&:after": {
+      content: '""',
+      position: "absolute",
+      right: 0,
+      width: "1em",
+      height: "1em",
+      marginTop: "0.2em",
+    }
   },
   button: {
     borderRadius: '20px'
+  },
+  actionContainer: {
+    display: "flex",
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
   }
 });
 export default withStyles(styles)(Notification);
