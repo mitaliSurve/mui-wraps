@@ -1,0 +1,21 @@
+.notification {
+    display: flex;
+    margin-top: 10px;
+}
+.notification--card {
+    width: 500px;
+    padding-bottom: 10px;
+}
+.notification--title {
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: transparent;
+}
+.notification--primary {
+    color: black;
+}
+.notification--secondary {
+    color: transparent;
+}

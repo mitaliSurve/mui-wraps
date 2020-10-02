@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -10,42 +10,27 @@ import CloseIcon from '@material-ui/icons/Close';
 import CardActions from '@material-ui/core/CardActions';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 
 
-// const Notification = ({ title, description, ...props }) => {
-//   const classes = useStyles();
-//   const { isShowing, setIsShowing } = React.useState(true);
+const Notification = ({ title, description, PrimaryButton, SecondaryButton, color }) => {
+  // console.log( 'define props: ', title, 'title', description, 'description', actionYes, 'yes', actionNo, 'No', color,);
+  const classes = useStyles();
+  const [isCancel, setisCancel] = useState(true);
 
-//   const handleHiddenButton = () => {
-//     setIsShowing(!isShowing);
-//   };
-
-
-class Notification extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isDisplayed: true,
-    };
-  }
-  toggleShowHide = () => {
-    this.setState(state => ({ isDisplayed: !state.isDisplayed }));
+  const handleCancelAction = () => {
+    setisCancel(false);
   };
 
-  render() {
-    const { classes } = this.props;
-    return (
+  return (
       <div className={classes.root} >
         <Card className={classes.card}>
           <Grid container spacing={0}>
-            <Grid item xs={10}>
+            <Grid item xs={11}>
               <CardHeader
                 className={classes.title}
-                title={this.props.title}
-                style={{
-                  color: this.props.color
-                }}
+                title={title}
+                style={color && { color }}
               />
               <Divider />
               <CardContent>
@@ -53,47 +38,39 @@ class Notification extends Component {
                   className={classes.subtext}
                   variant='body1'
                 >
-                  {this.props.description}
+                  {description}
                 </Typography>
               </CardContent>
-              <CardActions>
+              <CardActions
+                className={classes.alignsty}>
                 <Button
                   variant="contained"
                   color='primary'
-                  className={classes.button}
                 >
-                  {this.props.yes}
+                  {PrimaryButton}
                 </Button>
                 <Button
                   variant="contained"
                   color='secondary'
-                  className={classes.button}
                 >
-                  {this.props.no}
+                  {SecondaryButton}
                 </Button>
               </CardActions>
             </Grid>
-            <Grid item xs={2} className={classes.action}>
-              <CardHeader
-                style={{
-                  color: this.props.color
-                }}
-                action={
-                  <IconButton onClick={this.toggleShowHide} >
-                    {this.state.isDisplayed ?
-                      <CloseIcon style={{ color: this.props.color }} />
-                      : null
-                    }
-                  </IconButton>
-                }
-              />
+            <Grid item xs={1}
+              className={classes.closeIconContainer}>
+              <IconButton onClick={handleCancelAction} >
+                {isCancel && (
+                  <CloseIcon style={color && { color }} />
+                )}
+              </IconButton>
             </Grid>
           </Grid>
         </Card>
       </div>
-    )
-  }
+  )
 };
+
 
 Notification.propTypes = {
   title: PropTypes.string,
@@ -103,12 +80,10 @@ Notification.propTypes = {
 };
 
 Notification.defaultProps = {
-  color: '',
   onClick: () => { },
 };
 
-// const useStyles = makeStyles((theme) => ({
-const styles = (theme) => createStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     marginTop: '10px',
@@ -122,17 +97,10 @@ const styles = (theme) => createStyles({
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap",
-    color: '#ffffff',
+    height: '20px',
   },
   subtext: {
-    // overflow: 'hidden',
-    // whiteSpace: 'nowrap',
-    // textOverflow: 'ellipsis',
-    // width: '400px',
-    // position: 'relative',
-
-
-    maxWidth: "30rem",
+    maxWidth: "28rem",
     overflow: "hidden",
     position: "relative",
     lineHeight: "1.2em",
@@ -155,18 +123,82 @@ const styles = (theme) => createStyles({
       marginTop: "0.2em",
     }
   },
-  button: {
-    borderRadius: '20px'
-  },
-  actionContainer: {
-    display: "flex",
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end'
-  },
-  action: {
+  closeIconContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   },
-});
-export default withStyles(styles)(Notification);
+  alignsty: {
+    marginLeft: '7px',
+  }
+}));
+export default withStyles(useStyles)(Notification);
+
+
+
+// class Notification extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       isCancel: true,
+//       action: [],
+//       variant: '',
+//     };
+//   }
+//   toggleShowHide = () => {
+//     this.setState(state => ({ isCancel: !state.isCancel }));
+//   };
+
+//   render() {
+//     const { classes } = this.props;
+//     const { variant, action } = this.state;
+//     return (
+//       <div className={classes.root} >
+//         <Card className={classes.card}>
+//           <Grid container spacing={0}>
+//             <Grid item xs={11}>
+//               <CardHeader
+//                 className={classes.title}
+//                 title={this.props.title}
+//                 action={this.props.action}
+//                 // style={{ variant: }}
+//               />
+//               <Divider />
+//               <CardContent>
+//                 <Typography
+//                   className={classes.subtext}
+//                   variant='body1'
+//                 >
+//                   {this.props.description}
+//                 </Typography>
+//               </CardContent>
+//               <CardActions>
+//                 <Button
+//                   variant="contained"
+//                   color='primary'
+//                 >
+//                   {this.props.yes}
+//                 </Button>
+//                 <Button
+//                   variant="contained"
+//                   color='secondary'
+//                 >
+//                   {this.props.no}
+//                 </Button>
+//               </CardActions>
+//             </Grid>
+//             <Grid item xs={1}>
+//               <IconButton onClick={this.toggleShowHide} >
+//                 {this.state.isCancel ?
+//                   <CloseIcon style={{ variant }} />
+//                   : null
+//                 }
+//               </IconButton>
+//             </Grid>
+//           </Grid>
+//         </Card>
+//       </div>
+//     )
+//   }
+// };
+
